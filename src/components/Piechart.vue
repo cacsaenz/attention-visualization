@@ -28,6 +28,10 @@ export default {
         title: {
           text: 'Predominance on each class',
         },
+        subtitle: {
+          text: 'How much of the attention correspond to predictions on a particular stance',
+          align: 'left',
+        },
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },

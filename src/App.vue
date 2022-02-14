@@ -1,14 +1,23 @@
 <template>
   <div id="app">
     <!-- TODO: Download button -->
-    <!-- TODO: README tooltip -->
     <h1 class="text-center mb-5">BERT-based models Interpretability</h1>
     <b-row class="align-items-center">
       <b-col cols="6" md="4" lg="3">
         <b-form-select v-model="top" :options="topOptions"></b-form-select>
       </b-col>
       <b-col cols="3">
-        <b-form-checkbox v-model="onlyPIWs">Only PIWs</b-form-checkbox>
+        <b-form-checkbox class="d-inline-block" v-model="onlyPIWs">Only PIWs </b-form-checkbox>
+        <span
+          v-b-tooltip.hover
+          title="Show only the words that POSITIVELY impact the model's predictions"
+        >
+          <b-icon
+            class="ml-1"
+            icon="question-circle"
+            variant="dark"
+          ></b-icon>
+        </span>
       </b-col>
     </b-row>
     <b-row>
@@ -36,13 +45,33 @@
               <b-col class="text-right" md="5">
                 <h3 class="m-0">{{ selectedWord.word }}</h3>
               </b-col>
-              <b-col class="attention-percentages">
-                <p class="font-weight-bold m-0 text-primary">{{
+              <b-col>
+                <p class="font-weight-bold m-0 text-primary d-inline-block">{{
                     `${(selectedWord.attention_correct / selectedWord.attention * 100).toFixed(1)}% (${(selectedWord.attention_correct).toFixed(1)} Positive PAW)`
                 }}</p>
-                <p class="font-weight-bold m-0 text-danger">{{
+                <span
+                  v-b-tooltip.hover
+                  title="The attention weight of this word corresponding to correct predictions"
+                >
+                  <b-icon
+                    class="ml-1"
+                    icon="question-circle"
+                    variant="primary"
+                  ></b-icon>
+                </span>
+                <p class="font-weight-bold m-0 text-danger d-inline-block">{{
                   `${(selectedWord.attention_incorrect / selectedWord.attention * 100).toFixed(1)}% (${(selectedWord.attention_incorrect).toFixed(1)} Negative PAW)`
                 }}</p>
+                <span
+                  v-b-tooltip.hover
+                  title="The attention weight of this word corresponding to incorrect predictions"
+                >
+                  <b-icon
+                    class="ml-1"
+                    icon="question-circle"
+                    variant="danger"
+                  ></b-icon>
+                </span>
               </b-col>
             </b-row>
             <b-row class="mt-4">

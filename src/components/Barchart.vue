@@ -35,6 +35,10 @@ export default {
         title: {
           text: self.onlyPIWs ? 'Positive Influential Words' : 'Influential Words',
         },
+        subtitle: {
+          text: 'Click on any word to see more details',
+          align: 'left',
+        },
         xAxis: {
           categories: this.words.map(word => word.word),
         },
