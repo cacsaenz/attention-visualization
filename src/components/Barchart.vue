@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <p class="text-center">Barchart</p> -->
-    <!-- BUILD HERE THE INFO -->
     <highcharts ref="chart" :options="chartOptions"></highcharts>
   </div>
 </template>
@@ -18,20 +16,9 @@ export default {
     words: Array,
     onlyPIWs: Boolean,
   },
-  data: () => {
-    return {
-      showModal: false,
-      currentWord: null,
-    };
-  },
   methods: {
     handleChartClick({ point }) {
-      console.log('Chart click');
-      if (this.showModal) {
-        return;
-      }
-      this.showModal = true;
-      this.currentWord = point.category;
+      this.$emit('show-word-details', point.category);
     }
   },
   computed: {
@@ -41,6 +28,9 @@ export default {
         chart: {
           type: 'bar',
           height: '500px',
+        },
+        tooltip: {
+          valueDecimals: 2,
         },
         title: {
           text: self.onlyPIWs ? 'Positive Influential Words' : 'Influential Words',

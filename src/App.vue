@@ -13,23 +13,68 @@
     </b-row>
     <b-row>
       <b-col :class="{ 'col-xs-7 col-md-8': onlyPIWs }">
-        <Barchart :words="filteredWords" :onlyPIWs="onlyPIWs"></Barchart>
+        <Barchart
+          :words="filteredWords"
+          :onlyPIWs="onlyPIWs"
+          @show-word-details="toggleWordDetails"
+        ></Barchart>
       </b-col>
       <b-col class="col-xs-5 col-md-4" v-if="onlyPIWs">
         <Wordcloud :words="filteredWords"></Wordcloud>
       </b-col>
     </b-row>
-    <!-- <pre>
-      <code>
-        {{ filteredWords }}
-      </code>
-    </pre> -->
+    <b-modal
+      size="xl"
+      ref="modal"
+      :hide-footer="true"
+      title="Word details"
+    >
+      <b-container v-if="selectedWord !== null" fluid>
+        <b-row class="align-items-center">
+          <b-col sm="8" md="9">
+            <b-row class="align-items-center justify-content-center">
+              <b-col class="text-right" md="5">
+                <h3 class="m-0">{{ selectedWord.word }}</h3>
+              </b-col>
+              <b-col class="attention-percentages">
+                <p class="font-weight-bold m-0 text-primary">{{
+                    `${(selectedWord.attention_correct / selectedWord.attention * 100).toFixed(1)}% (${(selectedWord.attention_correct).toFixed(1)} Positive PAW)`
+                }}</p>
+                <p class="font-weight-bold m-0 text-danger">{{
+                  `${(selectedWord.attention_incorrect / selectedWord.attention * 100).toFixed(1)}% (${(selectedWord.attention_incorrect).toFixed(1)} Negative PAW)`
+                }}</p>
+              </b-col>
+            </b-row>
+            <b-row class="mt-4">
+              <piechart :word="selectedWord"></piechart>
+            </b-row>
+          </b-col>
+          <b-col sm="4" md="3">
+            <div
+              v-if="selectedWord.attention_correct >= selectedWord.threshold"
+              class="text-center"
+            >
+              <div class="piw-symbol">✅</div>
+              <div>This is a Positive Influential Word</div>
+            </div>
+            <div
+              v-else
+              class="text-center"
+            >
+              <div class="piw-symbol">❌</div>
+              <div>This is NOT a Positive Influential Word</div>
+            </div>
+          </b-col>
+        </b-row>
+      </b-container>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import * as d3 from 'd3';
 import Barchart from './components/Barchart.vue';
+import Piechart from './components/Piechart.vue';
 import Wordcloud from './components/Wordcloud.vue';
 
 export default {
@@ -37,6 +82,7 @@ export default {
   components: {
     Barchart,
     Wordcloud,
+    Piechart,
   },
   data() {
     return {
@@ -45,6 +91,8 @@ export default {
       threshold: 0,
       onlyPIWs: false,
       top: 10,
+      showModal: false,
+      selectedWord: null,
       topOptions: [
         {
           value: null,
@@ -108,6 +156,9 @@ export default {
         attention: parseFloat(data.attention),
         attention_correct: parseFloat(data.attention_correct),
         attention_incorrect: parseFloat(data.attention_incorrect),
+        antichina_attention: parseFloat(data.antichina_attention),
+        antivacina_attention: parseFloat(data.antivacina_attention),
+        provacina_attention: parseFloat(data.provacina_attention),
         threshold: this.threshold * parseFloat(data.attention),
       };
     });
@@ -130,6 +181,17 @@ export default {
         return wordB.attention - wordA.attention;
       }).slice(0, this.top);
     },
+    wordsMap() {
+      const map = {};
+      this.filteredWords.forEach((word) => (map[word.word] = word));
+      return map;
+    },
+  },
+  methods: {
+    toggleWordDetails(word){
+      this.selectedWord = this.wordsMap[word];
+      this.$refs.modal.show();
+    },
   },
 }
 </script>
@@ -137,5 +199,9 @@ export default {
 <style>
 body {
   padding: 2rem;
+}
+
+.piw-symbol {
+  font-size: 2.5rem;
 }
 </style>
