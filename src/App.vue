@@ -46,32 +46,36 @@
                 <h3 class="m-0">{{ selectedWord.word }}</h3>
               </b-col>
               <b-col>
-                <p class="font-weight-bold m-0 text-primary d-inline-block">{{
-                    `${(selectedWord.attention_correct / selectedWord.attention * 100).toFixed(1)}% (${(selectedWord.attention_correct).toFixed(1)} Positive PAW)`
-                }}</p>
-                <span
-                  v-b-tooltip.hover
-                  title="The attention weight of this word corresponding to correct predictions"
-                >
-                  <b-icon
-                    class="ml-1"
-                    icon="question-circle"
-                    variant="primary"
-                  ></b-icon>
-                </span>
-                <p class="font-weight-bold m-0 text-danger d-inline-block">{{
-                  `${(selectedWord.attention_incorrect / selectedWord.attention * 100).toFixed(1)}% (${(selectedWord.attention_incorrect).toFixed(1)} Negative PAW)`
-                }}</p>
-                <span
-                  v-b-tooltip.hover
-                  title="The attention weight of this word corresponding to incorrect predictions"
-                >
-                  <b-icon
-                    class="ml-1"
-                    icon="question-circle"
-                    variant="danger"
-                  ></b-icon>
-                </span>
+                <div>
+                  <p class="font-weight-bold m-0 text-primary d-inline-block">{{
+                      `${(selectedWord.attention_correct / selectedWord.attention * 100).toFixed(1)}% (${(selectedWord.attention_correct).toFixed(1)} Positive PAW)`
+                  }}</p>
+                  <span
+                    v-b-tooltip.hover
+                    title="The attention weight of this word corresponding to correct predictions"
+                  >
+                    <b-icon
+                      class="ml-1"
+                      icon="question-circle"
+                      variant="primary"
+                    ></b-icon>
+                  </span>
+                </div>
+                <div>
+                  <p class="font-weight-bold m-0 text-danger d-inline-block">{{
+                    `${(selectedWord.attention_incorrect / selectedWord.attention * 100).toFixed(1)}% (${(selectedWord.attention_incorrect).toFixed(1)} Negative PAW)`
+                  }}</p>
+                  <span
+                    v-b-tooltip.hover
+                    title="The attention weight of this word corresponding to incorrect predictions"
+                  >
+                    <b-icon
+                      class="ml-1"
+                      icon="question-circle"
+                      variant="danger"
+                    ></b-icon>
+                  </span>
+                </div>
               </b-col>
             </b-row>
             <b-row class="mt-4">

@@ -3,7 +3,7 @@ node_modules
 /dist
 
 # Custom
-public/data/
+# public/data/
 
 # local env files
 .env.local
